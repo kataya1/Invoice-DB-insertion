@@ -1,0 +1,44 @@
+1- make database
+
+    sudo su - postgres
+    createdb shellscriptinglab
+    psql 
+    \c shellscriptinglab
+    \i <path>/setup.sql
+
+2- creating dummy txt
+
+    1- touch invoice invoice_details
+    2- chmod o+w invoice invoice_details
+
+3- create scripts
+
+    1- cd ~
+    2- mkdir shell_scripting_lab1
+    3- touch invoice_validation.sh invoice_detailes_validation.sh steps.txt
+    4- chmod a+wx invoice_validation.sh invoice_detailes_validation.sh
+
+    5- touch dbinsert_into_invoice.sh    
+    6- touch dbinsert_into_invoice_detailes.sh
+    7- chmod o+wx dbinsert_into_invoice.sh dbinsert_into_invoice_detailes.sh
+
+    8- make .pgpass in ~ directory # echo "localhost:5432:shellscriptinglab:postgres:<passwd>" > ~/.pgpass
+    9- chmod 0600 .pgpass
+
+4- run scripts in order
+    
+    1- ./invoice_validation.sh invoice
+    2- ./invoice_detailes_validation.sh invoice_details
+
+    #  the two scripts will create new files valid_invoice and valid_invoice_detailes
+    #  run the scripts dbinsert_into_invoice.sh and  dbinsert_into_invoice_details.sh to insert into database 
+
+    1- ./dbinsert_into_invoice valid_invoice
+    2- ./dbinsert_into_invoice_details valid_invoice_detailes
+
+5- reserves
+    #CAN'T CHECK UNIQUENESS OF AN ID it involves a database request and response on each line (that's authentication vs validation)
+    #the better way to do it is to leave the database to handle it
+    #it's better not to check it on file either if an invaliid entry stops a valid entry with the same 
+    id from going to the valid_invoice file (we can fix this but there is no difference between including 
+    2 valid invoice with same id   and  inserting into the database when the id already exists)
